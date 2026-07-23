@@ -216,8 +216,11 @@ export default function Navbar() {
             <BiDonateBlood />
           </div>
 
+          {/* <p className="text-2xl font-bold text-red-600">
+            Blood<span className="text-gray-900 font-bold">Connect</span>
+          </p> */}
           <p className="text-2xl font-bold text-red-600">
-            Blood<span className="text-black">Connect</span>
+            BloodConnect
           </p>
           
         </Link>
