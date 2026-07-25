@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { BiDonateBlood } from "react-icons/bi";
+import { User } from "lucide-react";
 
 export default function Navbar() {
     const router = useRouter();
@@ -90,15 +91,17 @@ export default function Navbar() {
                                     role="button"
                                     className="avatar cursor-pointer"
                                 >
-                                    <div className="w-10 overflow-hidden rounded-full ring ring-red-500 ring-offset-2">
-                                        <img
-                                            src={
-                                                user.image ||
-                                                `https://ui-avatars.com/api/?name=${user.name}`
-                                            }
-                                            alt="avatar"
-                                        />
-                                    </div>
+                                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-white ring ring-red-500 ring-offset-2">
+                                     {user?.image ? (
+    <img
+      src={user.image}
+      alt={user.name}
+      className="h-full w-full rounded-full object-cover"
+    />
+  ) : (
+    <User size={20} />
+  )}
+</div>
                                 </div>
 
                                 <ul
@@ -147,6 +150,13 @@ export default function Navbar() {
             {/* Mobile Menu */}
             {menuOpen && (
                 <div className="space-y-3 border-t bg-white px-5 py-4 md:hidden">
+
+                    <Link
+                        href="/"
+                        className="block"
+                    >
+                        Home    
+                    </Link>
 
                     <Link
                         href="/donation-requests"
