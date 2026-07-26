@@ -13,7 +13,6 @@ import {
   Link,
   Description
 } from "@heroui/react";
-// Switched to Lucide React icons
 import { 
   Eye, 
   EyeOff, 
@@ -36,6 +35,7 @@ export default function SignupPage () {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -46,11 +46,13 @@ export default function SignupPage () {
 
   // UI States
   const [isVisible, setIsVisible] = useState(false);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
 
   // Computed local state for available upazilas
   const availableUpazilas = upazilasOfDistrict[selectedDistrict] || [];
@@ -60,6 +62,13 @@ export default function SignupPage () {
     setIsLoading(true);
     setError("");
     setSuccess("");
+
+    // Password Match Validation Block
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const { data: user, error: authError } = await authClient.signUp.email(
@@ -102,6 +111,7 @@ export default function SignupPage () {
       setName("");
       setEmail("");
       setPassword("");
+      setConfirmPassword("");
       setPhone("");
       setBloodGroup("");
       setSelectedDistrict("");
@@ -109,7 +119,7 @@ export default function SignupPage () {
       setAddress("");
       setLastDonationDate("");
 
-      router.push("/signin");
+      router.push("/auth/signin");
 
     } catch (err) {
       setError("An unexpected error occurred.");
@@ -228,21 +238,6 @@ export default function SignupPage () {
             </select>
           </div>
 
-          {/* Full Address */}
-          <TextField className="md:col-span-2 w-full">
-            <Label>Full Address</Label>
-            <InputGroup className="flex items-center gap-2 border border-border rounded-xl px-3 bg-default-50 focus-within:border-primary transition-colors">
-              <MapPin className="text-default-400 size-5 flex-shrink-0" />
-              <Input
-                type="text"
-                placeholder="Village, Road, House No."
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="w-full bg-transparent outline-none py-2 text-sm"
-              />
-            </InputGroup>
-          </TextField>
-
           {/* Last Donation Date */}
           <TextField className="w-full">
             <Label>Last Donation Date</Label>
@@ -271,12 +266,12 @@ export default function SignupPage () {
           </TextField>
 
           {/* Password Field */}
-          <TextField isRequired className="w-full md:col-span-2">
+          <TextField isRequired className="w-full">
             <Label>Password</Label>
             <InputGroup className="flex items-center gap-2 border border-border rounded-xl px-3 bg-default-50 focus-within:border-primary transition-colors">
               <KeyRound className="text-default-400 size-5 flex-shrink-0" />
               <Input
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type={isVisible ? "text" : "password"}
@@ -291,8 +286,30 @@ export default function SignupPage () {
               </button>
             </InputGroup>
             <Description className="text-xs text-default-400 mt-1">
-              Must be at least 8 characters with 1 uppercase and 1 number
+              Must be at least 8 characters long
             </Description>
+          </TextField>
+
+          {/* Confirm Password Field */}
+          <TextField isRequired className="w-full">
+            <Label>Confirm Password</Label>
+            <InputGroup className="flex items-center gap-2 border border-border rounded-xl px-3 bg-default-50 focus-within:border-primary transition-colors">
+              <KeyRound className="text-default-400 size-5 flex-shrink-0" />
+              <Input
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                type={isConfirmVisible ? "text" : "password"}
+                className="w-full bg-transparent outline-none py-2 text-sm"
+              />
+              <button
+                className="focus:outline-none flex items-center justify-center cursor-pointer text-default-400 hover:text-default-600"
+                type="button"
+                onClick={toggleConfirmVisibility}
+              >
+                {isConfirmVisible ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+              </button>
+            </InputGroup>
           </TextField>
 
           {/* Global Banners */}

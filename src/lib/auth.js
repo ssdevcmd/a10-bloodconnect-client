@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { admin } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
 
 
@@ -10,8 +11,37 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
+
     database: mongodbAdapter(db, {
-        // Optional: if you don't provide a client, database transactions won't be enabled.
-        client 
-    })
-})
+        client,
+    }),
+    user: {
+        additionalFields: {
+            bloodGroup: {
+                type: "string",
+                required: true,
+            },
+            district: {
+                type: "string",
+                required: true,
+            },
+            upazila: {
+                type: "string",
+                required: true,
+            },
+            status: {
+                type: "string",
+                default: "active", // Default status as requested
+            },
+        },
+    },
+
+    plugins: [
+        admin({
+            // 1. Tell the plugin what roles your application supports
+            roles: ["admin", "donor", "volunteer"],
+            // 2. Override the default "user" role to match your design
+            defaultRole: "donor",
+        }),
+    ],
+});

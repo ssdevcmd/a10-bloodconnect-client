@@ -21,6 +21,7 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,14 +170,6 @@ export default function SignInPage() {
             <span className="text-sm text-gray-500">OR</span>
             <div className="h-px flex-1 bg-gray-300"></div>
           </div>
-
-          {/* Google */}
-          <Button
-            type="button"
-            className="w-full rounded-xl border bg-white py-3 font-medium transition hover:bg-gray-50 text-gray-700"
-          >
-            Continue with Google
-          </Button>
         </Form>
 
         {/* Register Redirect */}
