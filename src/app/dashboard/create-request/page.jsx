@@ -12,6 +12,7 @@ import {
     TextArea,
 } from "@heroui/react";
 import { BiDonateBlood } from "react-icons/bi";
+import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
 
 const bloodGroups = [
     "A+",
@@ -24,24 +25,13 @@ const bloodGroups = [
     "O-",
 ];
 
-const districts = [
-    "Dhaka",
-    "Chattogram",
-    "Rajshahi",
-    "Khulna",
-    "Barishal",
-    "Sylhet",
-    "Rangpur",
-    "Mymensingh",
-    "Narayanganj",
-];
-
 export default function CreateDonationRequestPage() {
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [selectedDistrict, setSelectedDistrict] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -197,17 +187,14 @@ export default function CreateDonationRequestPage() {
                         <select
                             name="district"
                             required
+                            value={selectedDistrict}
+                            onChange={(e) => setSelectedDistrict(e.target.value)}
                             className="w-full rounded-lg border bg-white p-3 outline-none focus:border-red-500"
                         >
-                            <option value="">
-                                Select district
-                            </option>
+                            <option value="">Select district</option>
 
                             {districts.map((district) => (
-                                <option
-                                    key={district}
-                                    value={district}
-                                >
+                                <option key={district} value={district}>
                                     {district}
                                 </option>
                             ))}
@@ -215,22 +202,27 @@ export default function CreateDonationRequestPage() {
                     </div>
 
                     {/* Upazila */}
-                    <TextField
-                        isRequired
-                        name="upazila"
-                        className="w-full"
-                    >
-                        <Label className="mb-2 block font-medium">
+                    <div className="w-full">
+                        <label className="mb-2 block font-medium">
                             Upazila
-                        </Label>
+                        </label>
 
-                        <Input
-                            placeholder="Enter upazila"
-                            className="w-full rounded-lg border p-3"
-                        />
+                        <select
+                            name="upazila"
+                            required
+                            className="w-full rounded-lg border bg-white p-3 outline-none focus:border-red-500"
+                        >
+                            <option value="">
+                                Select upazila
+                            </option>
 
-                        <FieldError className="mt-1 text-sm text-red-500" />
-                    </TextField>
+                            {upazilasOfDistrict[selectedDistrict]?.map((upazila) => (
+                                <option key={upazila} value={upazila}>
+                                    {upazila}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
                     {/* Hospital */}
                     <TextField
