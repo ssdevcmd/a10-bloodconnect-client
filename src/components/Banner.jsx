@@ -82,7 +82,7 @@ export default function Banner() {
           >
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
               <Link
-                href="/register"
+                href="/auth/signup"
                 className="block rounded-xl bg-red-600 px-8 py-4 text-center font-semibold text-white transition-colors duration-200 hover:bg-red-700 shadow-md"
               >
                 Join as a Donor

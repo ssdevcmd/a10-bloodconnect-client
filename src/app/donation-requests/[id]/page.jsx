@@ -17,6 +17,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import ConfirmationModal from "@/components/ConfirmationModal";
+import { toast } from "react-toastify";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -79,7 +80,7 @@ export default function DonationRequestDetailsPage() {
             const data = await res.json();
 
             if (data.success) {
-                alert("Donation confirmed!");
+                toast.success("Donation confirmed!");
                 router.refresh();
             }
         } catch (error) {

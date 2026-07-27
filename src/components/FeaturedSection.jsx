@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   HeartHandshake,
@@ -7,7 +9,46 @@ import {
   Activity,
   Droplet,
   ArrowRight,
+  DollarSign,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
+
+function Counter({ end, duration = 2, prefix = "", suffix = "" }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let start = 0;
+    const increment = end / (duration * 60);
+
+    const timer = setInterval(() => {
+      start += increment;
+
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 1000 / 60);
+
+    return () => clearInterval(timer);
+  }, [isInView, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
 
 export default function FeaturedSection() {
   const features = [
@@ -31,12 +72,35 @@ export default function FeaturedSection() {
     },
   ];
 
+ 
   const stats = [
-    { icon: Users, value: "5,000+", label: "Registered Donors" },
-    { icon: Activity, value: "1,200+", label: "Lives Helped" },
-    { icon: HeartHandshake, value: "350+", label: "Active Requests" },
-    { icon: Droplet, value: "8", label: "Blood Groups Covered" },
+    {
+      icon: Users,
+      value: 5000,
+      suffix: "+",
+      label: "Registered Donors",
+    },
+    {
+      icon: Activity,
+      value: 1200,
+      suffix: "+",
+      label: "Lives Helped",
+    },
+    {
+      icon: HeartHandshake,
+      value: 350,
+      suffix: "+",
+      label: "Active Requests",
+    },
+    {
+      icon: DollarSign,
+      value: 250000,
+      prefix: "$",
+      suffix: "+",
+      label: "Fundings",
+    },
   ];
+
 
   return (
     <section className="bg-white py-20">
@@ -86,7 +150,13 @@ export default function FeaturedSection() {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 rounded-3xl bg-gradient-to-r from-red-600 to-red-700 p-8 text-white md:p-10">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-20 rounded-3xl bg-gradient-to-r from-red-600 to-red-700 p-8 text-white md:p-10"
+        >
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
@@ -98,7 +168,11 @@ export default function FeaturedSection() {
                   </div>
 
                   <div className="mt-4 text-3xl font-extrabold">
-                    {stat.value}
+                    <Counter
+                      end={stat.value}
+                      prefix={stat.prefix || ""}
+                      suffix={stat.suffix || ""}
+                    />
                   </div>
 
                   <p className="mt-1 text-sm text-red-100">
@@ -108,7 +182,8 @@ export default function FeaturedSection() {
               );
             })}
           </div>
-        </div>
+        </motion.div>
+
 
         {/* Bottom CTA */}
         <div className="mt-14 text-center">
@@ -121,22 +196,6 @@ export default function FeaturedSection() {
             has to wait for lifesaving blood.
           </p>
 
-          <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-8 py-4 font-semibold text-white transition hover:bg-red-700 hover:shadow-lg"
-            >
-              Join as a Donor
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-
-            <Link
-              href="/search"
-              className="inline-flex items-center justify-center rounded-xl border border-gray-300 px-8 py-4 font-semibold text-gray-700 transition hover:border-red-600 hover:text-red-600"
-            >
-              Search Donors
-            </Link>
-          </div>
         </div>
       </div>
     </section>
