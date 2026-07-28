@@ -246,12 +246,7 @@ export default function DonationRequestDetailsPage() {
                         </div>
                     )}
 
-                    {/* Commit Action Footer Segment */}
-                    <div className="border-t border-gray-100 bg-gray-50/50 px-8 py-5 flex items-center justify-between gap-4">
-                        <p className="text-xs text-gray-400 max-w-xs font-medium">
-                            By clicking Donate Now, your donor contact profile coordinates will be forwarded to the case manager.
-                        </p>
-
+                    <div className="flex justify-end">
                         <ConfirmationModal
                             request={request}
                             onConfirm={handleDonate}
@@ -260,10 +255,10 @@ export default function DonationRequestDetailsPage() {
                                 Donate Now
                             </Button>
                         </ConfirmationModal>
+                        </div>
                     </div>
 
                 </div>
-            </div>
         </main>
     );
 }

@@ -97,7 +97,7 @@ export default function DashboardSidebar() {
         {/* Profile */}
         <Link
           href="/dashboard/profile"
-          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/profile")}`}
+          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/donor/profile")}`}
         >
           <User size={20} />
           Profile
@@ -115,8 +115,8 @@ export default function DashboardSidebar() {
             </Link>
 
             <Link
-              href="/dashboard/my-donation-requests"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/my-donation-requests")}`}
+              href="/dashboard/donor/my-donation-requests"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/donor/my-donation-requests")}`}
             >
               <Droplets size={20} />
               My Requests

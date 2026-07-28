@@ -13,6 +13,7 @@ import {
 } from "@heroui/react";
 import { BiDonateBlood } from "react-icons/bi";
 import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
+import { authClient } from "@/lib/auth-client";
 
 const bloodGroups = [
     "A+",
@@ -33,6 +34,9 @@ export default function CreateDonationRequestPage() {
     const [success, setSuccess] = useState("");
     const [selectedDistrict, setSelectedDistrict] = useState("");
 
+    const { data: session } = authClient.useSession();
+    const user = session?.user;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -45,6 +49,9 @@ export default function CreateDonationRequestPage() {
         const formData = new FormData(e.currentTarget);
 
         const donationRequest = {
+            requesterName: user?.name,
+            requesterEmail: user?.email,
+
             recipientName: formData.get("recipientName"),
             bloodGroup: formData.get("bloodGroup"),
             district: formData.get("district"),
@@ -54,6 +61,8 @@ export default function CreateDonationRequestPage() {
             date: formData.get("date"),
             time: formData.get("time"),
             reason: formData.get("reason"),
+
+            status: "pending",
         };
 
         try {
@@ -133,6 +142,32 @@ export default function CreateDonationRequestPage() {
                     onSubmit={handleSubmit}
                     className="grid w-full gap-6 md:grid-cols-2"
                 >
+
+                    {/* Requester Name */}
+                    <TextField className="w-full">
+                        <Label className="mb-2 block font-medium">
+                            Requester Name
+                        </Label>
+
+                        <Input
+                            value={user?.name || ""}
+                            readOnly
+                            className="w-full rounded-lg border p-3 bg-gray-100"
+                        />
+                    </TextField>
+
+                    {/* Requester Email */}
+                    <TextField className="w-full">
+                        <Label className="mb-2 block font-medium">
+                            Requester Email
+                        </Label>
+
+                        <Input
+                            value={user?.email || ""}
+                            readOnly
+                            className="w-full rounded-lg border p-3 bg-gray-100"
+                        />
+                    </TextField>
 
                     {/* Recipient Name */}
                     <TextField
