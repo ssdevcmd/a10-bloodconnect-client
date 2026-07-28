@@ -128,8 +128,8 @@ export default function DashboardSidebar() {
         {role === "volunteer" && (
           <>
             <Link
-              href="/dashboard/create-donation-request"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/create-donation-request")}`}
+              href="/dashboard/create-request"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/create-request")}`}
             >
               <PlusCircle size={20} />
               Create Request

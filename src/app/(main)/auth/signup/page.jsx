@@ -2,22 +2,22 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  TextField, 
-  Label, 
-  Input, 
-  InputGroup, 
-  Button, 
-  Card, 
-  CardHeader, 
+import {
+  TextField,
+  Label,
+  Input,
+  InputGroup,
+  Button,
+  Card,
+  CardHeader,
   Link,
   Description
 } from "@heroui/react";
-import { 
-  Eye, 
-  EyeOff, 
-  Mail, 
-  KeyRound, 
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  KeyRound,
   User,
   Phone,
   MapPin,
@@ -28,7 +28,7 @@ import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-export default function SignupPage () {
+export default function SignupPage() {
   const router = useRouter();
 
   // Core Form States
@@ -77,6 +77,9 @@ export default function SignupPage () {
           password,
           name,
           image: "",
+          bloodGroup,
+          district: selectedDistrict,
+          upazila,
         },
         (authError) => {
           if (authError) {
@@ -107,7 +110,7 @@ export default function SignupPage () {
       console.log("Donor Details Payload:", donor);
 
       setSuccess("Account created successfully! Redirecting...");
-      
+
       setName("");
       setEmail("");
       setPassword("");
@@ -188,6 +191,7 @@ export default function SignupPage () {
           <div className="flex flex-col gap-1 w-full">
             <Label className="text-sm font-medium">Blood Group</Label>
             <select
+              name="bloodGroup"
               required
               value={bloodGroup}
               onChange={(e) => setBloodGroup(e.target.value)}
@@ -208,7 +212,7 @@ export default function SignupPage () {
               value={selectedDistrict}
               onChange={(e) => {
                 setSelectedDistrict(e.target.value);
-                setUpazila(""); 
+                setUpazila("");
               }}
               className="w-full rounded-xl border border-border p-[10px] text-sm bg-default-50 focus:border-primary focus:outline-none transition-colors"
             >
