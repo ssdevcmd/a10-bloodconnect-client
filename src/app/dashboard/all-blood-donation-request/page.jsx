@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  Button,
-  Dropdown,
-  Label,
-} from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
+import { Button, Dropdown, Label } from "@heroui/react";
 import { MoreVertical } from "lucide-react";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AllBloodDonationRequestPage() {
+  const { data: session } = authClient.useSession();
+
+  const role = session?.user?.role;
+
   const [requests, setRequests] = useState([]);
   const [status, setStatus] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -32,32 +33,33 @@ export default function AllBloodDonationRequestPage() {
       const data = await res.json();
 
       setRequests(data);
-    } catch (error) {
-      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
   const updateStatus = async (id, newStatus) => {
-    try {
-      await fetch(
-        `${API_URL}/donation-requests/${id}/status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status: newStatus,
-          }),
-        }
-      );
+    await fetch(`${API_URL}/donation-requests/${id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        status: newStatus,
+      }),
+    });
 
-      fetchRequests();
-    } catch (error) {
-      console.error(error);
-    }
+    fetchRequests();
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this request?")) return;
+
+    await fetch(`${API_URL}/donation-requests/${id}`, {
+      method: "DELETE",
+    });
+
+    fetchRequests();
   };
 
   if (loading) {
@@ -71,22 +73,15 @@ export default function AllBloodDonationRequestPage() {
   return (
     <div className="space-y-6">
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-
-        <div>
-          <h1 className="text-3xl font-bold">
-            All Blood Donation Requests
-          </h1>
-
-          <p className="text-gray-500">
-            Manage all donation requests.
-          </p>
-        </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">
+          All Blood Donation Requests
+        </h1>
 
         <select
-          className="rounded-lg border px-4 py-2"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
+          className="rounded-lg border px-4 py-2"
         >
           <option value="all">All</option>
           <option value="pending">Pending</option>
@@ -94,7 +89,6 @@ export default function AllBloodDonationRequestPage() {
           <option value="done">Done</option>
           <option value="canceled">Canceled</option>
         </select>
-
       </div>
 
       <div className="overflow-x-auto rounded-xl border bg-white">
@@ -105,33 +99,11 @@ export default function AllBloodDonationRequestPage() {
 
             <tr>
 
-              <th className="px-5 py-4 text-left">
-                Recipient
-              </th>
-
-              <th className="px-5 py-4 text-left">
-                Blood
-              </th>
-
-              <th className="px-5 py-4 text-left">
-                Location
-              </th>
-
-              <th className="px-5 py-4 text-left">
-                Hospital
-              </th>
-
-              <th className="px-5 py-4 text-left">
-                Date
-              </th>
-
-              <th className="px-5 py-4 text-left">
-                Status
-              </th>
-
-              <th className="px-5 py-4 text-center">
-                Actions
-              </th>
+              <th className="px-4 py-3 text-left">Recipient</th>
+              <th className="px-4 py-3 text-left">Location</th>
+              <th className="px-4 py-3 text-left">Blood</th>
+              <th className="px-4 py-3 text-left">Status</th>
+              <th className="px-4 py-3 text-center">Actions</th>
 
             </tr>
 
@@ -141,32 +113,27 @@ export default function AllBloodDonationRequestPage() {
 
             {requests.map((request) => (
 
-              <tr
-                key={request._id}
-                className="border-b"
-              >
+              <tr key={request._id} className="border-b">
 
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   {request.recipientName}
                 </td>
 
-                <td className="px-5 py-4 font-semibold text-red-600">
-                  {request.bloodGroup}
-                </td>
-
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   {request.upazila}, {request.district}
                 </td>
 
-                <td className="px-5 py-4">
-                  {request.hospitalName}
+                <td className="px-4 py-4">
+                  {request.bloodGroup}
                 </td>
 
-                <td className="px-5 py-4">
-                  {request.date}
-                </td>
+              
 
-                <td className="px-5 py-4">
+                
+
+               
+
+                <td className="px-4 py-4">
 
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${
@@ -186,7 +153,7 @@ export default function AllBloodDonationRequestPage() {
 
                 </td>
 
-                <td className="px-5 py-4 text-center">
+                <td className="px-4 py-4 text-center">
 
                   <Dropdown>
 
@@ -204,60 +171,63 @@ export default function AllBloodDonationRequestPage() {
                         <Dropdown.Item
                           id="view"
                           onPress={() =>
-                            window.location.href =
-                              `/donation-requests/${request._id}`
+                            window.location.href = `/donation-requests/${request._id}`
                           }
                         >
-                          <Label>
-                            View Details
-                          </Label>
+                          <Label>View</Label>
                         </Dropdown.Item>
 
-                        {request.status ===
-                          "pending" && (
-                          <Dropdown.Item
-                            id="progress"
-                            onPress={() =>
-                              updateStatus(
-                                request._id,
-                                "inprogress"
-                              )
-                            }
-                          >
-                            <Label>
-                              Mark In Progress
-                            </Label>
-                          </Dropdown.Item>
-                        )}
-
-                        {request.status ===
-                          "inprogress" && (
+                        {(role === "admin" || role === "volunteer") && (
                           <>
+                            <Dropdown.Item
+                              id="inprogress"
+                              onPress={() =>
+                                updateStatus(request._id, "inprogress")
+                              }
+                            >
+                              <Label>Mark In Progress</Label>
+                            </Dropdown.Item>
+
                             <Dropdown.Item
                               id="done"
                               onPress={() =>
-                                updateStatus(
-                                  request._id,
-                                  "done"
-                                )
+                                updateStatus(request._id, "done")
                               }
                             >
-                              <Label>
-                                Mark Done
-                              </Label>
+                              <Label>Mark Done</Label>
                             </Dropdown.Item>
 
                             <Dropdown.Item
                               id="cancel"
                               onPress={() =>
-                                updateStatus(
-                                  request._id,
-                                  "canceled"
-                                )
+                                updateStatus(request._id, "canceled")
                               }
                             >
-                              <Label>
-                                Cancel
+                              <Label>Cancel</Label>
+                            </Dropdown.Item>
+                          </>
+                        )}
+
+                        {role === "admin" && (
+                          <>
+                            <Dropdown.Item
+                              id="edit"
+                              onPress={() =>
+                                window.location.href =
+                                  `/dashboard/edit-request/${request._id}`
+                              }
+                            >
+                              <Label>Edit</Label>
+                            </Dropdown.Item>
+
+                            <Dropdown.Item
+                              id="delete"
+                              onPress={() =>
+                                handleDelete(request._id)
+                              }
+                            >
+                              <Label className="text-red-600">
+                                Delete
                               </Label>
                             </Dropdown.Item>
                           </>

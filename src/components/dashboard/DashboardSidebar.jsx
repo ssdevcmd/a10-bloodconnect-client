@@ -12,6 +12,8 @@ import {
   Shield,
   LogOut,
   HeartPulse,
+  HandCoins,
+  FileText,
 } from "lucide-react";
 
 export default function DashboardSidebar() {
@@ -87,8 +89,8 @@ export default function DashboardSidebar() {
 
         {/* Dashboard */}
         <Link
-          href={`/dashboard/${role}`}
-          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive(`/dashboard/${role}`)}`}
+          href={"/dashboard"}
+          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard")}`}
         >
           <LayoutDashboard size={20} />
           Dashboard
@@ -97,16 +99,32 @@ export default function DashboardSidebar() {
         {/* Profile */}
         <Link
           href="/dashboard/profile"
-          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/donor/profile")}`}
+          className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/profile")}`}
         >
           <User size={20} />
           Profile
         </Link>
 
+         <Link
+              href="/dashboard/donor/my-donation-requests"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/my-donation-requests")}`}
+            >
+              <Droplets size={20} />
+              My Requests
+            </Link>
+
+             <Link
+              href="/dashboard/create-request"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/create-request")}`}
+            >
+              <PlusCircle size={20} />
+              Create Request
+            </Link>
+
         {/* Donor */}
         {role === "donor" && (
           <>
-            <Link
+            {/* <Link
               href="/dashboard/create-request"
               className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/create-request")}`}
             >
@@ -120,30 +138,39 @@ export default function DashboardSidebar() {
             >
               <Droplets size={20} />
               My Requests
-            </Link>
+            </Link> */}
           </>
         )}
 
-        {/* Volunteer */}
+
         {role === "volunteer" && (
           <>
             <Link
-              href="/dashboard/create-request"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/create-request")}`}
+              href="/dashboard/all-blood-donation-request"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/all-blood-donation-request")}`}
             >
-              <PlusCircle size={20} />
-              Create Request
+              <Droplets size={20} />
+              Public Requests
+            </Link>
+
+            {/* <Link
+              href="/dashboard/content-management"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/content-management")}`}
+            >
+              <FileText size={20} />
+              Content Management
             </Link>
 
             <Link
-              href="/dashboard/my-donation-requests"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/my-donation-requests")}`}
+              href="/dashboard/funding"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/funding")}`}
             >
-              <Droplets size={20} />
-              Manage Requests
-            </Link>
+              <HandCoins size={20} />
+              Funding
+            </Link> */}
           </>
         )}
+
 
         {/* Admin */}
         {role === "admin" && (

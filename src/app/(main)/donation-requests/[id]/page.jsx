@@ -133,6 +133,7 @@ export default function DonationRequestDetailsPage() {
     return (
         <main className="min-h-screen bg-gray-50/50 px-5 py-12">
             <div className="mx-auto max-w-4xl">
+                <h1 className="text-center font-bold text-4xl">Request <span className="text-red-600">Details</span></h1>
 
                 {/* Navigation Actions */}
                 <div className="mb-6 flex items-center justify-between">
@@ -143,6 +144,7 @@ export default function DonationRequestDetailsPage() {
                         <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
                         Back to Donation Requests
                     </Link>
+                    
                     <p className="rounded-xl bg-amber-100 border border-amber-200 px-4 py-1.5 text-xs font-bold tracking-wide uppercase text-amber-800">{request.status}</p>
                 </div>
 
@@ -221,19 +223,7 @@ export default function DonationRequestDetailsPage() {
                             </p>
                         </div>
 
-                        {/* Dynamic Status Metric */}
-                        <div className="sm:col-span-2 rounded-2xl border border-amber-100 bg-amber-50/40 p-5 flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-wider text-amber-600/80">Current Status</p>
-                                <p className="text-sm font-medium text-amber-800 mt-0.5">Waiting for an available matching donor contact</p>
-                            </div>
-                            <span className="rounded-xl bg-amber-100 border border-amber-200 px-4 py-1.5 text-xs font-bold tracking-wide uppercase text-amber-800">
-                                {request.status || "Pending"}
-                            </span>
-                        </div>
-
-                    </div>
-
+                       </div>
                     {/* Conditional Medical Context Message Block */}
                     {request.message && (
                         <div className="mx-8 mb-4 rounded-2xl border border-gray-100 bg-gray-50/30 p-6">

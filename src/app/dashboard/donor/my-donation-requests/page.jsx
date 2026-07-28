@@ -9,6 +9,7 @@ import {
   Label,
 } from "@heroui/react";
 import { MoreVertical } from "lucide-react";
+import Pagination from "@/components/Pagination";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -19,18 +20,22 @@ export default function MyDonationRequestsPage() {
   const [requests, setRequests] = useState([]);
   const [status, setStatus] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    if (!session?.user?.email) return;
+  const limit = 10;
 
-    fetchRequests();
-  }, [session, status]);
+  // useEffect(() => {
+  //   if (!session?.user?.email) return;
+
+  //   fetchRequests();
+  // }, [session, status, page]);
 
   const fetchRequests = async () => {
     setLoading(true);
 
     try {
-      let url = `${API_URL}/my-donation-requests?email=${session.user.email}`;
+      let url = `${API_URL}/my-donation-requests?email=${session.user.email}&page=${page}&limit=${limit}`;
 
       if (status !== "all") {
         url += `&status=${status}`;
@@ -38,8 +43,12 @@ export default function MyDonationRequestsPage() {
 
       const res = await fetch(url);
       const data = await res.json();
+      console.log(data);
 
-      setRequests(data);
+      setRequests(data.requests);
+      setTotalPages(data.totalPages);
+      setRequests(data.requests);
+      setTotalPages(data.totalPages);
     } catch (err) {
       console.log(err);
     } finally {
@@ -47,15 +56,11 @@ export default function MyDonationRequestsPage() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this donation request?")) return;
-
-    await fetch(`${API_URL}/donation-requests/${id}`, {
-      method: "DELETE",
-    });
+  useEffect(() => {
+    if (!session?.user?.email) return;
 
     fetchRequests();
-  };
+  }, [session, status, page]);
 
   const updateStatus = async (id, newStatus) => {
     await fetch(`${API_URL}/donation-requests/${id}/status`, {
@@ -69,6 +74,20 @@ export default function MyDonationRequestsPage() {
     });
 
     fetchRequests();
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this donation request?")) return;
+
+    const res = await fetch(`${API_URL}/donation-requests/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      fetchRequests();
+    }
   };
 
   if (loading) {
@@ -161,12 +180,12 @@ export default function MyDonationRequestsPage() {
                   <td>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${request.status === "pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : request.status === "inprogress"
-                            ? "bg-blue-100 text-blue-700"
-                            : request.status === "done"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : request.status === "inprogress"
+                          ? "bg-blue-100 text-blue-700"
+                          : request.status === "done"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
                         }`}
                     >
                       {request.status === "inprogress"
@@ -278,6 +297,17 @@ export default function MyDonationRequestsPage() {
                                   Cancel Request
                                 </Label>
                               </Dropdown.Item>
+
+                              <Dropdown.Item
+                                id="delete"
+                                onPress={() =>
+                                  handleDelete(request._id)
+                                }
+                              >
+                                <Label className="text-red-600">
+                                  Delete Request
+                                </Label>
+                              </Dropdown.Item>
                             </>
                           )}
 
@@ -295,6 +325,11 @@ export default function MyDonationRequestsPage() {
           </tbody>
 
         </table>
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
 
       </div>
     </div>
