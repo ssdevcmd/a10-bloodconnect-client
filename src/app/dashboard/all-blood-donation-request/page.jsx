@@ -12,6 +12,7 @@ export default function AllBloodDonationRequestPage() {
   const { data: session } = authClient.useSession();
 
   const role = session?.user?.role;
+  console.log(session?.user);
 
   const [requests, setRequests] = useState([]);
   const [status, setStatus] = useState("all");
@@ -31,6 +32,9 @@ export default function AllBloodDonationRequestPage() {
 
       const res = await fetch(url);
       const data = await res.json();
+
+      console.log("Status filter:", status);
+console.log("Fetched requests:", data);
 
       setRequests(data);
     } finally {

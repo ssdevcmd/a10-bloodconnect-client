@@ -45,6 +45,7 @@ export default function ProfilePage() {
       });
     }
   }, [user]);
+  console.log(user);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -106,7 +107,7 @@ export default function ProfilePage() {
           <div className="absolute -bottom-12 left-10 flex items-end gap-5">
 
             <Avatar
-              src={user?.image || ""}
+              src={user?.image}
               name={user?.name}
               className="h-28 w-28 border-4 border-white text-3xl"
             />
@@ -179,7 +180,7 @@ export default function ProfilePage() {
                 <Input
                   label="Email"
                   value={formData.email}
-                  isDisabled
+                  readOnly
                   startContent={<Mail size={16} />}
                 />
 

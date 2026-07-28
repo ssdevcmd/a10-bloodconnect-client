@@ -52,12 +52,12 @@ export default function VolunteerDashboardPage() {
 
           <div>
             <h1 className="text-3xl font-bold">
-              Welcome, {user?.name} 👋
+              Welcome, {user?.name}!
             </h1>
 
             <p className="mt-2 text-red-100">
               Thank you for supporting BloodConnect. Manage donation
-              requests, blogs and funding from your dashboard.
+              requests, donors and funding from your dashboard.
             </p>
           </div>
         </div>

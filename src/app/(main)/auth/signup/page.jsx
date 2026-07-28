@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
+import { usersAvatar } from "@/lib/usersAvatar";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -59,6 +60,14 @@ export default function SignupPage() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    if (!photo) {
+      setError("Please select a profile photo.");
+      return;
+    }
+
+    const imageUrl = await usersAvatar(photo);
+
     setIsLoading(true);
     setError("");
     setSuccess("");
@@ -76,7 +85,7 @@ export default function SignupPage() {
           email,
           password,
           name,
-          image: "",
+          image: imageUrl,
           bloodGroup,
           district: selectedDistrict,
           upazila,
@@ -103,7 +112,7 @@ export default function SignupPage() {
         upazila,
         address,
         lastDonationDate,
-        photo,
+        image: imageUrl,
       };
 
       console.log("Better Auth Response:", user);
