@@ -111,7 +111,7 @@ export default function MyDonationRequestsPage() {
         <Button
           className="bg-red-600 text-white"
           onPress={() =>
-            router.push("/dashboard/donor/create-request")
+            router.push("/dashboard/create-request")
           }
         >
           Create Request

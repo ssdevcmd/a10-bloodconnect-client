@@ -106,13 +106,13 @@ export default function ProfilePage() {
 
           <div className="absolute -bottom-12 left-10 flex items-end gap-5">
 
-            <Avatar
+            <img
               src={user?.image}
-              name={user?.name}
-              className="h-28 w-28 border-4 border-white text-3xl"
+              alt={user?.name}
+              className="h-28 w-28 border-4 rounded-full border-white text-3xl"
             />
 
-            <div className="pb-3 text-white">
+            <div className="pb-5 text-white">
 
               <h2 className="text-3xl font-bold">
                 {formData.name}

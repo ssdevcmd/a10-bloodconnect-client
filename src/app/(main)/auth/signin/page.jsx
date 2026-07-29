@@ -179,7 +179,7 @@ export default function SignInPage() {
             href="/auth/signup"
             className="font-semibold text-red-600 hover:underline"
           >
-            Register
+            Sign Up
           </Link>
         </p>
       </div>

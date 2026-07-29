@@ -135,33 +135,33 @@ export default function AllUsersPage() {
                   <td>
                     <div className="flex items-center gap-3">
 
-                      <Avatar
-                        src={user.image}
-                        name={user.name}
-                        className="h-10 w-10"
+                      <img
+                        src={user?.image}
+                        alt={user?.name}
+                        className="h-10 w-10 rounded-full border-2 border-white"
                       />
 
                       <span className="font-medium">
-                        {user.name}
+                        {user?.name}
                       </span>
 
                     </div>
                   </td>
 
-                  <td>{user.email}</td>
+                  <td>{user?.email}</td>
 
-                  <td>{user.bloodGroup}</td>
+                  <td>{user?.bloodGroup}</td>
 
-                  <td>{user.district}</td>
+                  <td>{user?.district}</td>
 
                   <td>
                     <span className="capitalize font-medium">
-                      {user.role}
+                      {user?.role}
                     </span>
                   </td>
 
                   <td>
-                    {user.banned ? (
+                    {user?.banned ? (
                       <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-600">
                         Blocked
                       </span>

@@ -68,6 +68,7 @@ export default function SignupPage() {
 
     const imageUrl = await usersAvatar(photo);
 
+
     setIsLoading(true);
     setError("");
     setSuccess("");
@@ -113,7 +114,19 @@ export default function SignupPage() {
         address,
         lastDonationDate,
         image: imageUrl,
+        role: "donor",
+        status: "active",
+        createdAt: new Date(),
       };
+
+
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(donor),
+      });
 
       console.log("Better Auth Response:", user);
       console.log("Donor Details Payload:", donor);
@@ -140,6 +153,7 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4 py-12">
@@ -269,7 +283,7 @@ export default function SignupPage() {
           <TextField className="w-full">
             <Label>Profile Photo</Label>
             <InputGroup className="flex items-center gap-2 border border-border rounded-xl px-3 bg-default-50 focus-within:border-primary transition-colors">
-              <Input
+              <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => setPhoto(e.target.files ? e.target.files[0] : null)}
