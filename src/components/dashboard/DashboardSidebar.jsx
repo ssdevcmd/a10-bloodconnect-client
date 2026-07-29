@@ -184,20 +184,14 @@ export default function DashboardSidebar() {
             </Link>
 
             <Link
-              href="/dashboard/admin/all-blood-donation-request"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/admin/all-blood-donation-request")}`}
+              href="/dashboard/all-blood-donation-request"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/all-blood-donation-request")}`}
             >
               <Droplets size={20} />
-              All Requests
+              Public Requests
             </Link>
 
-            <Link
-              href="/dashboard/admin/content-management"
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 ${isActive("/dashboard/admin/content-management")}`}
-            >
-              <Shield size={20} />
-              Content
-            </Link>
+            
           </>
         )}
 
