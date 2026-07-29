@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🩸 BloodConnect
 
-## Getting Started
+BloodConnect is a modern blood donation management platform that connects blood donors with recipients in need. The platform simplifies the process of requesting blood, finding donors, managing donations, and supporting the organization through secure online funding.
 
-First, run the development server:
+## 🌐 Live Website
+
+**Client:** 
+
+**Server:** 
+
+> Replace the URLs above with your deployed links.
+
+---
+
+## ✨ Features
+
+- 🔐 Secure authentication with **Better Auth** (Email/Password & Google Sign-In).
+- 🩸 Create, update, and manage blood donation requests.
+- 👨‍⚕️ Search blood donors by blood group and location.
+- 💳 Donate securely using **Stripe Checkout**.
+- 👤 Role-based dashboard for **Admin**, **Donor**, and **Volunteer**.
+- 📊 Dashboard statistics and funding overview.
+- 🖼️ Image upload support using ImgBB.
+- 📱 Fully responsive UI built with Tailwind CSS and HeroUI.
+- 🔒 Protected routes based on user roles.
+- ⚡ Fast performance with Next.js App Router.
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- Next.js 16
+- React 19
+- Tailwind CSS
+- HeroUI
+- Better Auth Client
+- Axios
+- React Icons
+- Lucide React
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Better Auth
+- Stripe API
+- ImgBB API
+- dotenv
+- CORS
+
+---
+
+---
+
+## 🚀 Installation
+
+### Clone the repository
+
+```bash
+git clone https://github.com/ssdevcmd/a10-bloodconnect-client
+```
+
+```bash
+git clone https://github.com/ssdevcmd/a10-bloodconnect-server
+
+---
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+### Run the client
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Run the server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 👥 User Roles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🩸 Donor
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Register/Login
+- Create donation requests
+- Update request status
+- View donation history
+- Make funding donations
 
-## Deploy on Vercel
+### 🤝 Volunteer
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Manage donation requests
+- Update request status
+- Assist donors
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 👑 Admin
+
+- Manage all users
+- Promote/Demote roles
+- Manage funding records
+- View dashboard analytics
+- Control platform activities
+
+---
+
+## 💳 Payment Integration
+
+This project uses **Stripe Checkout** for secure online donations.
+
+---
+
+## 📸 Image Hosting
+
+User profile images are uploaded using **ImgBB API**.
+
+---
+
+## 🔒 Authentication
+
+Authentication is handled by **Better Auth** with:
+
+- Email & Password
+- JWT Session Strategy
+- Role-Based Authorization
+
+---
+
+## 📈 Future Improvements
+
+- Real-time donor availability
+- Blood donation event management
+- Advanced search filters
+
+
+---

@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { admin } from "better-auth/plugins";
+import { admin, jwt } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
 
 
@@ -36,6 +36,14 @@ export const auth = betterAuth({
         },
     },
 
+    session: {
+        cookieCache: {
+            enabled: true,
+            strategy: 'jwt',
+            maxAge: 7 * 24 * 60 * 60
+        }
+},
+
     plugins: [
         admin({
             // 1. Tell the plugin what roles your application supports
@@ -43,5 +51,7 @@ export const auth = betterAuth({
             // 2. Override the default "user" role to match your design
             defaultRole: "donor",
         }),
+
+        jwt()
     ],
 });
