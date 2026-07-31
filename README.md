@@ -5,10 +5,8 @@ BloodConnect is a modern blood donation management platform that connects blood 
 ## 🌐 Live Website
 
 **Client:** 
-
+https://bloodconnect-client-eta.vercel.app
 **Server:** 
-
-> Replace the URLs above with your deployed links.
 
 ---
 
