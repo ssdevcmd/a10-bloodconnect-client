@@ -2,6 +2,10 @@
 
 BloodConnect is a modern blood donation management platform that connects blood donors with recipients in need. The platform simplifies the process of requesting blood, finding donors, managing donations, and supporting the organization through secure online funding.
 
+## 📸 Screenshot
+
+![BloodConnect Screenshot](./public/Screenshot.png)
+
 ## 🌐 Live Website
 
 **Client:** 
