@@ -32,9 +32,21 @@ export default function FundingPage() {
     useEffect(() => {
         const fetchFundingData = async () => {
             try {
+
+                const { data: tokenData } = await authClient.token();
                 const [fundingsRes, statsRes] = await Promise.all([
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/fundings`),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/statistics`),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/fundings`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/statistics`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }),
                 ]);
 
                 const fundings = await fundingsRes.json();
@@ -52,6 +64,7 @@ export default function FundingPage() {
 
     const handleDonate = async () => {
         const amount = Number(customAmount || selectedAmount);
+        
 
         const res = await fetch("/api/checkout_sessions", {
             method: "POST",
@@ -71,7 +84,6 @@ export default function FundingPage() {
 
         window.location.href = data.url;
     };
-
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-14">

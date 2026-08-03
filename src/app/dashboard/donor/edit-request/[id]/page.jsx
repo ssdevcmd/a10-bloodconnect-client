@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
 import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -72,12 +73,14 @@ export default function EditRequestPage() {
     setUpdating(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
       const res = await fetch(
         `${API_URL}/donation-requests/${id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`,
           },
           body: JSON.stringify(formData),
         }

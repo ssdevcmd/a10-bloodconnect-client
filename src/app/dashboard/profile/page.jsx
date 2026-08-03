@@ -55,10 +55,32 @@ export default function ProfilePage() {
   };
 
   const handleSave = async () => {
-    // TODO: Update user profile
-    console.log(formData);
+    try {
+      const { data: tokenData } = await authClient.token();
 
-    setIsEditing(false);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const result = await res.json();
+
+      console.log(result);
+
+      if (res.ok) {
+        toast.success("Profile updated successfully.");
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

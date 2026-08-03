@@ -35,20 +35,25 @@ export default function MyDonationRequestsPage() {
     setLoading(true);
 
     try {
-      let url = `${API_URL}/my-donation-requests?email=${session.user.email}&page=${page}&limit=${limit}`;
+      const { data: tokenData } = await authClient.token();
+
+      let url = `${API_URL}/my-donation-requests?page=${page}&limit=${limit}`;
 
       if (status !== "all") {
         url += `&status=${status}`;
       }
 
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log(data);
+      const res = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
+        },
+      });
 
-      setRequests(data.requests);
-      setTotalPages(data.totalPages);
-      setRequests(data.requests);
-      setTotalPages(data.totalPages);
+      const result = await res.json();
+
+      setRequests(result.requests);
+      setTotalPages(result.totalPages);
     } catch (err) {
       console.log(err);
     } finally {
@@ -57,16 +62,18 @@ export default function MyDonationRequestsPage() {
   };
 
   useEffect(() => {
-    if (!session?.user?.email) return;
+    if (!session) return;
 
     fetchRequests();
   }, [session, status, page]);
 
   const updateStatus = async (id, newStatus) => {
+    const { data: tokenData } = await authClient.token();
     await fetch(`${API_URL}/donation-requests/${id}/status`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify({
         status: newStatus,
@@ -79,8 +86,14 @@ export default function MyDonationRequestsPage() {
   const handleDelete = async (id) => {
     if (!confirm("Delete this donation request?")) return;
 
+    const { data: tokenData } = await authClient.token();
+
     const res = await fetch(`${API_URL}/donation-requests/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
+      },
     });
 
     const data = await res.json();

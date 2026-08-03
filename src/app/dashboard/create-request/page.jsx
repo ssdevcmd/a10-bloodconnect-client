@@ -66,12 +66,14 @@ export default function CreateDonationRequestPage() {
         };
 
         try {
+            const { data: tokenData } = await authClient.token();
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/donation-requests`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`,
                     },
                     body: JSON.stringify(donationRequest),
                 }

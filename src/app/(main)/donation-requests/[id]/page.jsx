@@ -44,8 +44,16 @@ export default function DonationRequestDetailsPage() {
         }
 
         const fetchRequest = async () => {
+            const { data: tokenData } = await authClient.token();
+
             try {
-                const res = await fetch(`${API_URL}/donation-requests/${requestId}`);
+                const res = await fetch(`${API_URL}/donation-requests/${requestId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`
+                    }
+                });
                 if (!res.ok) throw new Error("Request not found");
 
                 const data = await res.json();
@@ -144,7 +152,7 @@ export default function DonationRequestDetailsPage() {
                         <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
                         Back to Donation Requests
                     </Link>
-                    
+
                     <p className="rounded-xl bg-amber-100 border border-amber-200 px-4 py-1.5 text-xs font-bold tracking-wide uppercase text-amber-800">{request.status}</p>
                 </div>
 
@@ -223,7 +231,7 @@ export default function DonationRequestDetailsPage() {
                             </p>
                         </div>
 
-                       </div>
+                    </div>
                     {/* Conditional Medical Context Message Block */}
                     {request.message && (
                         <div className="mx-8 mb-4 rounded-2xl border border-gray-100 bg-gray-50/30 p-6">
@@ -245,10 +253,10 @@ export default function DonationRequestDetailsPage() {
                                 Donate Now
                             </Button>
                         </ConfirmationModal>
-                        </div>
                     </div>
-
                 </div>
+
+            </div>
         </main>
     );
 }

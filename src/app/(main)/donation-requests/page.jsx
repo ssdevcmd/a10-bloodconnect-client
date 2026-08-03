@@ -10,6 +10,7 @@ import {
   ArrowRight,
   HeartPulse,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -41,6 +42,7 @@ useEffect(() => {
   const fetchRequests = async () => {
     try {
       console.log(API_URL);
+
 
       const res = await fetch(`${API_URL}/donation-requests`);
 

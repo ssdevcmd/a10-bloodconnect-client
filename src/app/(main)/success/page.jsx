@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -14,10 +15,13 @@ function SuccessContent() {
 
       if (!sessionId) return;
 
+      const { data: tokenData } = await authClient.token();
+
       await fetch(`${API_URL}/payments/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify({ sessionId }),
       });

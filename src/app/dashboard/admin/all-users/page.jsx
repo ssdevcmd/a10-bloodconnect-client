@@ -8,6 +8,7 @@ import {
   Label,
 } from "@heroui/react";
 import { MoreVertical } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,8 +25,15 @@ export default function AllUsersPage() {
     setLoading(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
       const res = await fetch(
-        `${API_URL}/user?status=${status}`
+        `${API_URL}/user?status=${status}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`,
+          },
+        }
       );
 
       const data = await res.json();
@@ -39,10 +47,12 @@ export default function AllUsersPage() {
   };
 
   const updateRole = async (id, role) => {
+    const { data: tokenData } = await authClient.token();
     await fetch(`${API_URL}/user/${id}/role`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify({ role }),
     });
@@ -51,10 +61,12 @@ export default function AllUsersPage() {
   };
 
   const toggleStatus = async (id, banned) => {
+    const { data: tokenData } = await authClient.token();
     await fetch(`${API_URL}/user/${id}/status`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify({ banned }),
     });
