@@ -14,6 +14,7 @@ import {
 import { BiDonateBlood } from "react-icons/bi";
 import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const bloodGroups = [
     "A+",
@@ -87,7 +88,7 @@ export default function CreateDonationRequestPage() {
                 );
             }
 
-            setSuccess("Donation request created successfully!");
+            toast.success("Donation request created successfully!");
 
             form.reset();
 
@@ -96,9 +97,7 @@ export default function CreateDonationRequestPage() {
             }, 1500);
         } catch (error) {
             console.error(error);
-            setError(
-                error.message ||
-                "Something went wrong. Please try again."
+            toast.error(error.message ||"Something went wrong. Please try again."
             );
         } finally {
             setIsLoading(false);

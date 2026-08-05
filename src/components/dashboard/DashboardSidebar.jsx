@@ -14,10 +14,14 @@ import {
   HeartPulse,
   HandCoins,
   FileText,
+  Menu,
 } from "lucide-react";
+import { Button, Drawer, DrawerContent } from "@heroui/react";
+import { useState } from "react";
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data: session, isPending } = authClient.useSession();
 
@@ -44,8 +48,8 @@ export default function DashboardSidebar() {
     );
   }
 
-  return (
-    <aside className="min-h-screen w-56 border-r bg-white shadow-sm">
+ const sidebarContent = (
+   <aside className="flex min-h-screen w-56 flex-col border-r bg-white shadow-sm">
 
       {/* Logo */}
       <div className="border-b p-6">
@@ -208,5 +212,46 @@ export default function DashboardSidebar() {
         </button>
       </div>
     </aside>
-  );
+ );
+ return (
+  <>
+    {/* Mobile Header */}
+    <div className="sticky top-0 z-40 flex items-center justify-between border-b bg-white p-4 lg:hidden">
+      <Button
+        isIconOnly
+        variant="light"
+        onPress={() => setIsOpen(true)}
+      >
+        <Menu size={22} />
+      </Button>
+
+      <h2 className="text-lg font-bold text-red-600">
+        BloodConnect
+      </h2>
+    </div>
+
+    {/* Mobile Drawer */}
+    <Drawer
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      placement="left"
+    >
+      <DrawerContent>
+        {() => (
+          <div
+            className="w-56"
+            onClick={() => setIsOpen(false)}
+          >
+            {sidebarContent}
+          </div>
+        )}
+      </DrawerContent>
+    </Drawer>
+
+    {/* Desktop Sidebar */}
+    <div className="hidden lg:block">
+      {sidebarContent}
+    </div>
+  </>
+);
 }

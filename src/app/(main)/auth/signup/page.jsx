@@ -26,6 +26,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { districts, upazilasOfDistrict } from "@/lib/bdLocations";
 import { usersAvatar } from "@/lib/usersAvatar";
+import { toast } from "react-toastify";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -99,7 +100,7 @@ export default function SignupPage() {
       );
 
       if (authError) {
-        setError(authError.message || "Something went wrong. Please try again.");
+        toast.error(authError.message || "Something went wrong. Please try again.");
         setIsLoading(false);
         return;
       }
@@ -128,10 +129,7 @@ export default function SignupPage() {
         body: JSON.stringify(donor),
       });
 
-      console.log("Better Auth Response:", user);
-      console.log("Donor Details Payload:", donor);
-
-      setSuccess("Account created successfully! Redirecting...");
+      toast.success("Account created successfully! Redirecting...");
 
       setName("");
       setEmail("");
@@ -147,7 +145,7 @@ export default function SignupPage() {
       router.push("/auth/signin");
 
     } catch (err) {
-      setError("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
       console.error(err);
     } finally {
       setIsLoading(false);

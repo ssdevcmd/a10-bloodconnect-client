@@ -13,6 +13,7 @@ import {
 } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, Heart } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -44,9 +45,9 @@ export default function SignInPage() {
       );
 
       if (authError) {
-        setError(authError.message || "Invalid email or password.");
+        toast.error(authError.message || "Invalid email or password.");
       } else {
-        setSuccess("Login successful! Redirecting...");
+        toast.success("Login successful! Redirecting...");
 
         setTimeout(() => {
           router.push("/dashboard");
@@ -55,7 +56,7 @@ export default function SignInPage() {
       }
     } catch (err) {
       console.error(err);
-      setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

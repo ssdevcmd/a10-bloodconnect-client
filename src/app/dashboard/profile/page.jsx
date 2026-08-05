@@ -18,6 +18,7 @@ import {
   Save,
   Pencil,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function ProfilePage() {
   const { data: session } = authClient.useSession();
@@ -59,7 +60,7 @@ export default function ProfilePage() {
       const { data: tokenData } = await authClient.token();
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
         {
           method: "PATCH",
           headers: {
@@ -80,6 +81,7 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update profile.");
     }
   };
 

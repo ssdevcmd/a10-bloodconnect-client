@@ -11,57 +11,45 @@ import {
   HeartPulse,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import Pagination from "@/components/Pagination";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DonationRequestsPage() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(9);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // useEffect(() => {
-  //   const fetchRequests = async () => {
-  //     try {
-  //       const res = await fetch(`${NEXT_PUBLIC_API_URL}/donation-requests`);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      setLoading(true);
 
-  //       if (!res.ok) {
-  //         throw new Error("Failed to fetch donation requests");
-  //       }
+      try {
+        const res = await fetch(
+          `${API_URL}/donation-requests?page=${page}&limit=${limit}`
+        );
 
-  //       const data = await res.json();
-  //       setRequests(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        const data = await res.json();
 
-  //   fetchRequests();
-  // }, []);
-useEffect(() => {
-  const fetchRequests = async () => {
-    try {
-      console.log(API_URL);
+        console.log('data:', data);
 
+        setRequests(data.requests || []);
+        setTotalPages(data.totalPages || 1);
 
-      const res = await fetch(`${API_URL}/donation-requests`);
+        setRequests(data.requests);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      console.log(res.status);
+    fetchRequests();
+  }, [page]);
 
-      const data = await res.json();
-
-      console.log(data);
-
-      setRequests(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchRequests();
-}, []);
   return (
     <main className="min-h-screen bg-gray-50">
 
@@ -226,6 +214,12 @@ useEffect(() => {
           </div>
         )}
       </section>
+      {/* Pagination */}
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </main>
   );
 }
